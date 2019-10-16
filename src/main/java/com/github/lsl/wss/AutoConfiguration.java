@@ -16,9 +16,11 @@ public class AutoConfiguration extends WebSocketTransportRegistration implements
 
         registry.addHandler(BinarySocketHandler(), "wss_b")
                 .setAllowedOrigins("*");
+        //持续的文件流一边写一边读
+        registry.addHandler(PipeSocketHandler(), "wss_continue")
+                .setAllowedOrigins("*");
 
     }
-
 
 
     private WebSocketHandler BinarySocketHandler() {
@@ -27,5 +29,10 @@ public class AutoConfiguration extends WebSocketTransportRegistration implements
 
     public WebSocketHandler myHandler() {
         return new AsrWebSocketHandler();
+    }
+
+
+    private WebSocketHandler PipeSocketHandler(){
+        return new PipeSocketHandler();
     }
 }

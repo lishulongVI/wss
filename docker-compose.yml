@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  wss-api:
+    image: wss-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HOST: "0.0.0.0"
+    ports:
+      - "8080:8081"

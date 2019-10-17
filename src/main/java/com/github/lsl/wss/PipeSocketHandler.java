@@ -1,5 +1,6 @@
 package com.github.lsl.wss;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
@@ -8,12 +9,16 @@ import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.net.URI;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PipeSocketHandler extends BinaryWebSocketHandler {
 
     private PipedOutputStream output;
     private PipedInputStream input;
+    private Map<String, String> map = System.getenv();
 
 
     @Override
@@ -57,6 +62,23 @@ public class PipeSocketHandler extends BinaryWebSocketHandler {
         input = new PipedInputStream();
         output.connect(input);
         System.out.println("绑定");
+
+        System.out.println(this.map);
+
+        URI uri = session.getUri();
+        assert uri != null;
+        String query = uri.getQuery();
+        System.out.println(query);
+        if (!StringUtils.isEmpty(query)) {
+            Map<String, String> map = new HashMap<>();
+            String[] split = query.split("&");
+            for (String s : split) {
+                String[] split1 = s.split("=");
+                map.put(split1[0], split1[1]);
+            }
+            System.out.println(map);
+        }
+
 
         new Thread(() -> {
             byte[] buffer = new byte[4096];

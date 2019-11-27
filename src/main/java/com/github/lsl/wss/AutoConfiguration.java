@@ -27,12 +27,13 @@ public class AutoConfiguration extends WebSocketTransportRegistration implements
         return new BinaryHandler();
     }
 
+
     public WebSocketHandler myHandler() {
         return new AsrWebSocketHandler();
     }
 
 
-    private WebSocketHandler PipeSocketHandler(){
+    private WebSocketHandler PipeSocketHandler() {
         return new PipeSocketHandler();
     }
 }

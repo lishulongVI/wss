@@ -24,8 +24,17 @@ public class PipeSocketHandler extends BinaryWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session, status);
-        input.close();
-        System.out.println("input 关闭");
+        try {
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("input .................... 关闭");
     }
 
     @Override
@@ -49,6 +58,7 @@ public class PipeSocketHandler extends BinaryWebSocketHandler {
             Thread.sleep(1000);
             System.out.println("读入文件流 ");
             System.out.println(i);
+//            session.close();
             output.write(message.getPayload().array());
         }
 
